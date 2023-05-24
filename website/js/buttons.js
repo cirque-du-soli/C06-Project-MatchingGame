@@ -18,6 +18,7 @@ function createDashboard(){
                                 "<li>Flip over two cards.</li>" + 
                                 "<li>If the two cards have the same picture, then continue flip two cards. If pictures are different, you lost!</li>" +
                             "</ul>";
+    dashboard.appendChild(instruction);
   
     // button
     let rtButton=document.createElement("button");
