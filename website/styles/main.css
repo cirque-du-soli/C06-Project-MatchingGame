@@ -9,6 +9,8 @@
     color: #2fa348;
     padding: 20px;
     text-align: center;
+    font-family: fantasy;
+    font-size: 35px;
   }
   
   .container {
@@ -72,6 +74,7 @@
 
 h1 {
   text-align: center;
+  
 }
 
 .game-container {
