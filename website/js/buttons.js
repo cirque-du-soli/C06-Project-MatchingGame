@@ -13,7 +13,7 @@ function createDashboard(){
     // instruction
     let instruction = document.createElement("div");
     instruction.setAttribute("id", "instruction");
-    instruction.innerHTML = "<h3>Instructions</h3>" +
+    instruction.innerHTML = "<h3 style='text-align: center;'>Instructions</h3>" +
                             "<ul>" +
                                 "<li>Flip over two cards.</li>" + 
                                 "<li>If the two cards have the same picture, then continue flip two cards. If pictures are different, you lost!</li>" +
