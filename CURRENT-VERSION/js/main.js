@@ -21,11 +21,7 @@ let timerRunning = false;
 // when page loads:
 $(document).ready(initialSetup);
 
-// Every time user clicks on a tile:
-$(".cardToFlip").on("click", { "thisCard": this }, userChoice); //END: on card click
 
-//New Game Button is clicked:
-$("#newGameBtn").click(newGameSetup);
 
 
 /////////////////////////////////////////////
@@ -33,9 +29,17 @@ $("#newGameBtn").click(newGameSetup);
 
 // INITIAL SETUP
 function initialSetup() { //to be executed on page load
-
-    //creates button elements
+    // creates button elements
     createDashboard();
+
+    // create tiles
+    createMCItem();
+
+    // Every time user clicks on a tile:
+    $(".cardToFlip").on("click", { "thisCard": this }, userChoice); //END: on card click
+
+    //New Game Button is clicked:
+    $("#newGameBtn").click(newGameSetup);
 
     // how many pairs in the game
     curTotalPairs = 6; //BONUS: this could be decided by user
@@ -292,19 +296,7 @@ function userChoice(clickedCard) {
             // Check if unshown tiles remain
             if ($(".cardToFlip").length == $(".lockCard").length) { //if all cards are locked
 
-                // Soli added these into functions for readability
 
-                /*                     // show best record
-                if (Math.floor(guesses/2) < bestScore) {
-                    bestScore = Math.floor(guesses/2);
-                }
-                $("#bestScore").html(bestScore);
-
-                // show result
-                $("#result").html("You won after " + Math.floor(guesses/2) + " guesses!");
-                //show newgame button
-                $("#newGameBtn").css('visibility', 'visible');
-            } else {
                 // NEXT ROUND */
 
 
@@ -332,7 +324,6 @@ function output(str) {
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 
-// Dashboard stuff (switch to jquery?)
 
 
 function createDashboard() {
@@ -356,28 +347,32 @@ function createDashboard() {
         "<li>See if you can beat your best score! Good Luck!!</li>" +
         "</ul>";
     dashboard.appendChild(instruction);
-
-    // // button
-    // let rtButton=document.createElement("button");
-    // rtButton.setAttribute("id", "rtButton");
-    // rtButton.setAttribute("onclick", newGameSetup);
-    // rtButton.style.display="none";
-    // dashboard.appendChild(rtButton);
 }
 
-// /**
-//  *
-//  * @param {boolean} isSame : a flag indicating the two tiles selected have the same image
-//  * @param {boolean} isGameOver : a flag indicating the game is over
-//  */
-// function setResult(isSame, isGameOver){
-//     //get result
-//     let result=document.getElementById("result");
 
-//     // indicate the player failed
-//     if (!isSame) {
-//         result.innerHTML = "You failed!";
-//     } else if (isGameOver) {
-//         result.innerHTML = "You completed the puzzle in " + moves + " steps!";
-//     }
-// }
+
+function createMCItem(){
+    let colMid = document.getElementById("tile-container");
+    
+    for (i = 0; i < 12; i++){
+        let midColItem = document.createElement("div");
+        midColItem.setAttribute("class", "middle-column-item");
+        midColItem.innerHTML = "<article class=\"cardHolder\">" +
+            "<div class=\"cardToFlip\">" +
+                "<div class=\"cardToFlip-inner\">" +
+                    "<div class=\"cardBack\">" +
+                        "<img class=\"cardImg\" src=\"https://picsum.photos/240/320?random=1\" alt=\"card back image\">"+
+        "</div>" +
+            "<div class=\"cardFace\">" +
+                "<img class=\"cardImg\" id=\"face" + i + "\" src=\"https://picsum.photos/240/320?random=8\" alt=\"card face image\">"+
+        "</div>" +
+            "</div>" +
+            "</div>" +
+            "</article>";
+        colMid.appendChild(midColItem);
+    }    
+}
+
+
+
+
