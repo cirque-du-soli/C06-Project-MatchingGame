@@ -6,9 +6,9 @@
   --cardBaseColor: #3685a1;
 
 
-  --shadowShow: #DDDDDD;
-  --shadowLock: #888888;
-  --shadowHide: #111111;
+  --shadowShow: #EBF8FF;
+  --shadowLock: #41EB74;
+  --shadowHide: #0B1F32;
 
   --bigFont: 'Aoboshi One';
   /* --bigFont: 'Fantasy'; */ 
@@ -164,7 +164,7 @@ h3 {
   color: var(--linesTextColor);
   font-size: 2vw;
   padding: 10px 0px 10px 10px;
-
+  box-shadow: 0 0 3px var(--shadowHide);
 }
 
 #newGameBtn {
@@ -238,16 +238,18 @@ li {
   text-align: center;
   transition: transform 0.6s;
   transform-style: preserve-3d;
-  box-shadow: 0 4px 10px 3px black;
+  box-shadow: 0 4px 10px 10px var(--shadowHide);
 
 }
 
 .cardToFlip.showCard .cardToFlip-inner {
   transform: rotateY(180deg);
+  box-shadow: 0 4px 10px 3px var(--shadowShow);
 }
 
 .cardToFlip.lockCard .cardToFlip-inner {
   transform: rotateY(180deg);
+  box-shadow: 0 2px 10px 3px var(--shadowLock);
 }
 
 .cardBack, .cardFace {
