@@ -1,6 +1,6 @@
 let count;
 
-// window.addEventListener('load', createDashboard); //onload event listener
+window.addEventListener('load', createDashboard); //onload event listener
 
 function createDashboard(){
     let dashboard = document.getElementById("dashboard");
@@ -15,18 +15,15 @@ function createDashboard(){
     instruction.setAttribute("id", "instruction");
     instruction.innerHTML = "<h3 style='text-align: center;'>Instructions</h3>" +
                             "<ul>" +
-                            "<li>On each turn, you can flip over two cards to reveal their front pictures.</li>" + 
-                            "<li>If the two cards have the same front pictures, they will be locked in an open position, and you can continue by flipping the next two cards.</li>" +
-                            "<li>If the two cards have different front pictures, they will be flipped back facedown, and you can continue flipping until you find all the matched images.</li>"+
-                            "<li>The number of moves you make to find all the matches counts as your score. Aim for a lower number of movements to achieve a better score.</li>"+
-                        "</ul>";
+                                "<li>Flip over two cards.</li>" + 
+                                "<li>If the two cards have the same picture, then continue flip two cards. If pictures are different, you lost!</li>" +
+                            "</ul>";
     dashboard.appendChild(instruction);
   
     // button
     let rtButton=document.createElement("button");
     rtButton.setAttribute("id", "rtButton");
     rtButton.style.display="none";
-    rtButton.setAttribute("onclick", newGameSetup);
     dashboard.appendChild(rtButton);
 }
 
@@ -44,9 +41,8 @@ function setResult(isSame, isGameOver){
         result.innerHTML = "You failed!";
     } else if (isGameOver) {
         result.innerHTML = "You completed the puzzle in " + count + " steps!";
-    }
-
-};
+    }    
+}
 
 
 

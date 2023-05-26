@@ -1,7 +1,6 @@
 /////////////////////////////////////////////
 ////////////////// SETUP:
 
-
 let numShown;
 let isMatch;
 let guesses = 0;
@@ -22,7 +21,7 @@ let timerRunning = false;
 $(document).ready(initialSetup);
 
 // Every time user clicks on a tile:
-$(".cardToFlip").on("click", { "thisCard": this }, userChoice); //END: on card click
+$(".cardToFlip").on("click", {"thisCard" : this}, userChoice); //END: on card click
 
 //New Game Button is clicked:
 $("#newGameBtn").click(newGameSetup);
@@ -117,7 +116,7 @@ function checkBestScore(guesses) {
 
     //check if current score is lower (or if it's the first)
     if (guesses < bestScore || isNaN(bestScore)) {
-
+        
         //set new best
         bestScore = guesses;
 
@@ -130,19 +129,16 @@ function checkBestScore(guesses) {
 
 // NEW GAME:
 function newGameSetup() {
-    // clear results and scores
-    guesses = 0;
-
-    $("#numGuesses").html("--");
-    $("#result").html("");
-
-    // flip all cards on back
-    $(".showCard").removeClass("showCard");
-    $(".lockCard").removeClass("lockCard");
-
 
     //show newgame button
     $("#newGameBtn").css('visibility', 'hidden');
+
+    // un-flip all cards
+    $(".showCard").removeClass("showCard");
+    $(".lockCard").removeClass("lockCard");
+
+    //reset guesses
+    guesses = 0;
 
     // generate random indexes
     let randomIndexes = [];
@@ -205,126 +201,103 @@ function newGameSetup() {
 
 // USER MAKES CHOICE
 function userChoice(clickedCard) {
-    // refer to the div with the .cardToFlip class
-    console.log("clicked a tile");
+     // refer to the div with the .cardToFlip class
+        console.log("clicked a tile");
 
-    console.log("clickedCard");
-    console.log(clickedCard);
+        console.log("clickedCard");
+        console.log(clickedCard);
 
-    console.log("*******NARROW DOWN***********");
-    console.log(clickedCard.currentTarget);
+        console.log("*******NARROW DOWN***********");
+        console.log(clickedCard.currentTarget);
+        
+        if (timerRunning) {
+            console.log("timer: ABORT");
+            return;
+        } else if ($(".showCard").length >= 2) {
+            console.log("too many cards: ABORT");
+            return;                             
+        } else if ($(clickedCard.currentTarget).hasClass("showCard")) {
+            console.log("clicked shown card: ABORT");
+            return;
+        } else if ($(clickedCard.currentTarget).hasClass("lockCard")) {
+            console.log("clicked locked card: ABORT");
+            return;
+        }
 
-    if (timerRunning) {
-        console.log("timer: ABORT");
-        return;
-    } else if ($(".showCard").length >= 2) {
-        console.log("too many cards: ABORT");
-        return;
-    } else if ($(clickedCard.currentTarget).hasClass("showCard")) {
-        console.log("clicked shown card: ABORT");
-        return;
-    } else if ($(clickedCard.currentTarget).hasClass("lockCard")) {
-        console.log("clicked locked card: ABORT");
-        return;
-    }
+        // reset subheader text
+        $("#subHeaderContent").text("Pick a card, any card...");
+        
+        // add .showCard class to div 
+        $(this).addClass("showCard");
+    
+    
+        // counts shown cards
+        numShown = $(".showCard").length;
+        console.log("numShown");
+        console.log(numShown);
+    
+        if (numShown >= 2) { //when 2 are shown
+    
+            // increase guesses and update element
+            guesses++;
+            $("#numGuesses").text(guesses);
 
-    // reset subheader text
-    $("#subHeaderContent").text("Pick a card, any card...");
+            //array of the img elements that are descendants of elems w/ .showCard class
+            twoCards = $(".showCard").find(".cardFace").find("img");
+            console.log("twoCards");
+            console.log(twoCards);
+    
+            // compare the cards
+            isMatch = compareCards(twoCards);
+    
+            // check if it"s a match
+            if (!isMatch) {// not a match
 
-    // add .showCard class to div 
-    $(this).addClass("showCard");
+                // indicate MISS to user
+                $("#subHeaderContent").text("Missed! Try Again.");
+                
+                //indicate timer has started
+                timerRunning = true;
 
+                // DELAY: for readability
+                timer = setTimeout(function () {
+    
+                    //remove .showCard class
+                    $(".showCard").removeClass("showCard");
 
-    // counts shown cards
-    numShown = $(".showCard").length;
-    console.log("numShown");
-    console.log(numShown);
+                    //indicate timer has stopped
+                    timerRunning = false;
+    
+                }, 1300); //END: TIMER
 
-    if (numShown >= 2) { //when 2 are shown
-
-        // increase guesses and update element
-        guesses++;
-        $("#numGuesses").text(guesses);
-
-        //array of the img elements that are descendants of elems w/ .showCard class
-        twoCards = $(".showCard").find(".cardFace").find("img");
-        console.log("twoCards");
-        console.log(twoCards);
-
-        // compare the cards
-        isMatch = compareCards(twoCards);
-
-        // check if it"s a match
-        if (!isMatch) {// not a match
-
-            // indicate MISS to user
-            output("Not A Match! Try Again.");
-            //$("#subHeaderContent").text("Not A Match! Try Again.");
-
-            //indicate timer has started
-            timerRunning = true;
-
-            // DELAY: for readability
-            timer = setTimeout(function () {
-
+            } else { // it"s a match!
+    
+                // indicate HIT to user
+                $("#subHeaderContent").text("It's A Match!!");
+    
+                //lock the cards in shown state
+                $(".showCard").addClass("lockCard");
+                console.log("added .lockCard")
+    
                 //remove .showCard class
                 $(".showCard").removeClass("showCard");
+                console.log("removed .showCard")
+    
+                // Check if unshown tiles remain
+                if ($(".cardToFlip").length == $(".lockCard").length) { //if all cards are locked
+    
+                    // cancel timer so that the text doesn't change
+                    clearTimeout(timer);
 
-                //indicate timer has stopped
-                timerRunning = false;
-
-            }, 1300); //END: TIMER
-
-        } else { // it"s a match!
-
-            // indicate HIT to user
-            output("It's A Match!!");
-            //$("#subHeaderContent").text("It's A Match!!");
-
-            //lock the cards in shown state
-            $(".showCard").addClass("lockCard");
-            console.log("added .lockCard")
-
-            //remove .showCard class
-            $(".showCard").removeClass("showCard");
-            console.log("removed .showCard")
-
-            // Check if unshown tiles remain
-            if ($(".cardToFlip").length == $(".lockCard").length) { //if all cards are locked
-
-                // Soli added these into functions for readability
-
-                /*                     // show best record
-                if (Math.floor(guesses/2) < bestScore) {
-                    bestScore = Math.floor(guesses/2);
-                }
-                $("#bestScore").html(bestScore);
-
-                // show result
-                $("#result").html("You won after " + Math.floor(guesses/2) + " guesses!");
-                //show newgame button
-                $("#newGameBtn").css('visibility', 'visible');
-            } else {
-                // NEXT ROUND */
-
-
-
-                // cancel timer so that the text doesn't change
-                clearTimeout(timer);
-
-                // GAME OVER 
-                gameOver(guesses);
-
-            } //END:check GameOver
-
-        }//END: check if match
-
-    }//END: check 2 shown
-
-}
-
-function output(str) {
-    $("#subHeaderContent").html(str);
+                    // GAME OVER 
+                    gameOver(guesses);
+    
+                } //END:check GameOver
+    
+            }//END: check if match
+    
+        }//END: check 2 shown
+    
 }
 
 
@@ -335,7 +308,7 @@ function output(str) {
 // Dashboard stuff (switch to jquery?)
 
 
-function createDashboard() {
+function createDashboard(){
     let dashboard = document.getElementById("dashboard");
 
     // result
@@ -347,37 +320,34 @@ function createDashboard() {
     let instruction = document.createElement("div");
     instruction.setAttribute("id", "instruction");
     instruction.innerHTML = "<h3 style='text-align: center;'>Instructions</h3>" +
-        "<ul>" +
-        "<li>On each turn, you can flip over two cards to reveal their front pictures. </li>" +
-        "<li>If the pictures match, the cards will stay revealed. </li>" +
-        "<li>If the pictures don't match, they will be flipped back face-down. </li>" +
-        "<li>Continue flipping two cards at a time, until you find all the matching pictures.</li>" +
-        "<li>Your score is the number of tries it takes to find every pair ... so aim for a lower number!</li>" +
-        "<li>See if you can beat your best score! Good Luck!!</li>" +
-        "</ul>";
+                            "<ul>" +
+                                "<li>Flip over two cards.</li>" + 
+                                "<li>If the two cards have the same picture, then continue flip two cards. If pictures are different, you lost!</li>" +
+                            "</ul>";
     dashboard.appendChild(instruction);
-
-    // // button
-    // let rtButton=document.createElement("button");
-    // rtButton.setAttribute("id", "rtButton");
-    // rtButton.setAttribute("onclick", newGameSetup);
-    // rtButton.style.display="none";
-    // dashboard.appendChild(rtButton);
+  
+    // button
+    let rtButton=document.createElement("button");
+    rtButton.setAttribute("id", "rtButton");
+    rtButton.style.display="none";
+    dashboard.appendChild(rtButton);
+    $("#rtButton").css({ width: "100%", "padding": "20px"});
+    $("#rtButton").value = "Play Again";
 }
 
-// /**
-//  *
-//  * @param {boolean} isSame : a flag indicating the two tiles selected have the same image
-//  * @param {boolean} isGameOver : a flag indicating the game is over
-//  */
-// function setResult(isSame, isGameOver){
-//     //get result
-//     let result=document.getElementById("result");
+/**
+ * 
+ * @param {boolean} isSame : a flag indicating the two tiles selected have the same image
+ * @param {boolean} isGameOver : a flag indicating the game is over
+ */
+function setResult(isSame, isGameOver){
+    //get result
+    let result=document.getElementById("result");
 
-//     // indicate the player failed
-//     if (!isSame) {
-//         result.innerHTML = "You failed!";
-//     } else if (isGameOver) {
-//         result.innerHTML = "You completed the puzzle in " + moves + " steps!";
-//     }
-// }
+    // indicate the player failed
+    if (!isSame) {
+        result.innerHTML = "You failed!";
+    } else if (isGameOver) {
+        result.innerHTML = "You completed the puzzle in " + count + " steps!";
+    }    
+}

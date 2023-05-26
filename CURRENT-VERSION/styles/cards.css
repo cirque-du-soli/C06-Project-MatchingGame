@@ -1,19 +1,19 @@
-.cardHolder { /* TODO: make size responsive, and change child widths & heights to 100% */
-    width: 240px;
-    height: 320px;
+.cardHolder { 
+    width: 9vw;
+    height: 12vw;
     max-width: 240px;
     max-height: 320px;
 }
 
 .cardImg {
-    width: 240px;
-    height: 320px;
+    width: 100%;
+    height: 100%;
 }
 
 .cardToFlip {
     background-color: transparent;
-    width: 240px;
-    height: 320px;
+    width: 100%;
+    height: 100%;
     perspective: 1000px;
 }
 

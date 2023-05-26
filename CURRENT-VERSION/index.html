@@ -5,7 +5,7 @@
   <title>Memory Game</title>
   <link rel="stylesheet" type="text/css" href="styles/main.css">
   <link rel="stylesheet" type="text/css" href="styles/cards.css">
-  
+
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 
 </head>
@@ -16,12 +16,15 @@
   </div>
 
   <div class="subHeader">
-    <p id = "subHeaderContent">Welcome!</p>
+    <div class="pHolder">
+      <p id="subHeaderContent">Welcome!</p>
+    </div>
   </div>
 
   <div class="container">
     <div class="column left">
       <div id="dashboard">
+        
       </div>
     </div>
 
@@ -200,33 +203,41 @@
           </div>
         </article>
       </div>
+
     </div>
+
 
     <div class="column right">
-      <div class="right-column">
 
-        <div class="right-column-top">
 
-          <div class="ovalHolder">
-            <div class="guessesTally oval">
-              Guesses: <span id = "numGuesses">--</span>
-            </div>
+      <div class="right-column-top">
+
+        <div class="ovalHolder">
+          <div class="guessesTally oval">
+            Guesses: <span id="numGuesses"> -- </span>
           </div>
-          <div class="ovalHolder">
-            <div class="bestScoreTally oval">Best Score: <span id = "bestScore">--</span></div>
+        </div>
+        <div class="ovalHolder">
+          <div class="bestScoreTally oval">
+            Best Score: <span id="bestScore"> -- </span>
           </div>
         </div>
 
-        <div class="right-column-bottom">
-          <div class="ovalHolder">
-            <button class="oval" id = "newGameBtn">Play Again!</button>
-          </div>
+      </div>
+
+      <div class="right-column-bottom">
+        <div class="ovalHolder">
+          <button class="oval" id="newGameBtn">Play Again!</button>
         </div>
       </div>
+
+
     </div>
+
+
   </div>
 
-  <script src="js/buttons.js"></script>
+
   <script src="js/main.js"></script>
 </body>
 
