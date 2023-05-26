@@ -1,5 +1,5 @@
 //TESTING
-$(document).ready(gameOver);
+// $(document).ready(gameOver);
 
 
 /////////////////////////////////////////////
@@ -8,6 +8,7 @@ $(document).ready(gameOver);
 let numShown;
 let isMatch;
 let guesses = 0;
+let bestScore = 999;
 let twoCards = [];
 let timer;
 let allImageUrls = new Array();
@@ -15,6 +16,7 @@ let maxImages = 20;
 let urlString = "";
 let curTotalPairs;
 let curTotalCards;
+
 
 /////////////////////////////////////////////
 ////////////////// LISTENERS:
@@ -98,22 +100,31 @@ function compareCards(cards) {
     }
 }; //END: fn compareCards
 
-//GAME OVER
-function gameOver(guesses) {
+// //GAME OVER
+// function gameOver(guesses) {
 
-    //TODO make this more dramatic
-    console.log("You won after " + guesses + " guesses!");
+//     //TODO make this more dramatic
+//     console.log("You won after " + guesses + " guesses!");
 
-    //show newgame button
-    $("#newGameBtn").css('visibility', 'visible');;
+//     //show newgame button
+//     $("#newGameBtn").css('visibility', 'visible');;
 
-}; //END: fn gameOver
+// }; //END: fn gameOver
 
 // NEW GAME:
 function newGameSetup() {
+    // clear results and scores
+    guesses = 0;
+
+    $("#numGuesses").html("--");
+    $("#result").html("");
+
+    // flip all cards on back
+    $(".showCard").removeClass("showCard");
+    $(".lockCard").removeClass("lockCard");
 
     //show newgame button
-    $("#newGameBtn").css('visibility', 'hidden');;
+    $("#newGameBtn").css('visibility', 'hidden');
 
     // generate random indexes
     let randomIndexes = [];
@@ -173,6 +184,13 @@ function newGameSetup() {
 
 // USER MAKES CHOICE
 function userChoice() {
+    // increment number of moves
+    if (!$(this).hasClass("lockCard")) {
+        guesses++;
+    }
+    
+    $("#numGuesses").html(Math.floor(guesses/2));
+
      // refer to the div with the .cardToFlip class
         console.log("clicked a tile");
 
@@ -199,8 +217,8 @@ function userChoice() {
     
             // check if it"s a match
             if (!isMatch) {// not a match
-                //TODO: indicate MISS to user
-                console.log("NOT MATCH: removed class showCard")
+                // indicate MISS to user
+                output("NOT A MATCH!")
                 // DELAY
                 timer = setTimeout(function () {
     
@@ -210,8 +228,7 @@ function userChoice() {
                 }, 1000); //END: TIMER
 
             } else { // it"s a match!
-    
-                console.log("IT'S A MATCH!!!")
+                output("IT'S A MATCH!!!");
     
                 //lock the cards in shown state
                 $(".showCard").addClass("lockCard");
@@ -223,10 +240,16 @@ function userChoice() {
     
                 // Check if unshown tiles remain
                 if ($(".cardToFlip").length == $(".lockCard").length) { //if all cards are locked
-    
-                    // GAME OVER 
-                    gameOver(guesses);
-    
+                    // show best record
+                    if (Math.floor(guesses/2) < bestScore) {
+                        bestScore = Math.floor(guesses/2);
+                    }
+                    $("#bestScore").html(bestScore);
+
+                    // show result
+                    $("#result").html("You won after " + Math.floor(guesses/2) + " guesses!");
+                    //show newgame button
+                    $("#newGameBtn").css('visibility', 'visible');
                 } else {
                     // NEXT ROUND
     
@@ -238,13 +261,16 @@ function userChoice() {
     
 }
 
+function output(str) {
+    $("#subHeaderContent").html(str);
+}
+
 
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 
 // Dashboard stuff (switch to jquery?)
-
 
 function createDashboard(){
     let dashboard = document.getElementById("dashboard");
@@ -259,33 +285,34 @@ function createDashboard(){
     instruction.setAttribute("id", "instruction");
     instruction.innerHTML = "<h3 style='text-align: center;'>Instructions</h3>" +
                             "<ul>" +
-                                "<li>Flip over two cards.</li>" + 
-                                "<li>If the two cards have the same picture, then continue flip two cards. If pictures are different, you lost!</li>" +
-                            "</ul>";
+                            "<li>On each turn, you can flip over two cards to reveal their front pictures.</li>" + 
+                            "<li>If the two cards have the same front pictures, they will be locked in an open position, and you can continue by flipping the next two cards.</li>" +
+                            "<li>If the two cards have different front pictures, they will be flipped back facedown, and you can continue flipping until you find all the matched images.</li>"+
+                            "<li>The number of moves you make to find all the matches counts as your score. Aim for a lower number of movements to achieve a better score.</li>"+
+                        "</ul>";
     dashboard.appendChild(instruction);
   
-    // button
-    let rtButton=document.createElement("button");
-    rtButton.setAttribute("id", "rtButton");
-    rtButton.style.display="none";
-    dashboard.appendChild(rtButton);
-    $("#rtButton").css({ width: "100%", "padding": "20px"});
-    $("#rtButton").value = "Play Again";
+    // // button
+    // let rtButton=document.createElement("button");
+    // rtButton.setAttribute("id", "rtButton");
+    // rtButton.setAttribute("onclick", newGameSetup);
+    // rtButton.style.display="none";
+    // dashboard.appendChild(rtButton);
 }
 
-/**
- * 
- * @param {boolean} isSame : a flag indicating the two tiles selected have the same image
- * @param {boolean} isGameOver : a flag indicating the game is over
- */
-function setResult(isSame, isGameOver){
-    //get result
-    let result=document.getElementById("result");
+// /**
+//  * 
+//  * @param {boolean} isSame : a flag indicating the two tiles selected have the same image
+//  * @param {boolean} isGameOver : a flag indicating the game is over
+//  */
+// function setResult(isSame, isGameOver){
+//     //get result
+//     let result=document.getElementById("result");
 
-    // indicate the player failed
-    if (!isSame) {
-        result.innerHTML = "You failed!";
-    } else if (isGameOver) {
-        result.innerHTML = "You completed the puzzle in " + count + " steps!";
-    }    
-}
+//     // indicate the player failed
+//     if (!isSame) {
+//         result.innerHTML = "You failed!";
+//     } else if (isGameOver) {
+//         result.innerHTML = "You completed the puzzle in " + moves + " steps!";
+//     }    
+// }
