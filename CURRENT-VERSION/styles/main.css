@@ -1,3 +1,21 @@
+:root {
+  --linesTextColor: #170443;
+  --btnSubColor: #5fc79f;
+  --lightBackColor: #e6d996;
+  --lightBackColor2: #d6ae69;
+  --cardBaseColor: #3685a1;
+
+
+  --shadowShow: #DDDDDD;
+  --shadowLock: #888888;
+  --shadowHide: #111111;
+
+  --bigFont: 'Aoboshi One';
+  /* --bigFont: 'Fantasy'; */ 
+  --littleFont: 'PT Serif';
+  --bulletFont: 'Arial';
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -5,8 +23,7 @@ body {
   /* background-image: url('images/backgroundsecondimage.jpg'); 
     background-size: cover;
     background-repeat: no-repeat;*/
-  background-color: cyan;
-
+  background-color: var(--lightBackColor);
 }
 
 h1 {
@@ -14,32 +31,40 @@ h1 {
 }
 
 .header {
-  color: darkblue;
+  color: var(--linesTextColor);
   padding: 10px;
   text-align: center;
-  font-family: fantasy;
+  font-family: var(--bigFont);
   font-size: 35px;
   height: fit-content;
+  background-color: var(--lightBackColor2);
 }
 
 .subHeader {
-  background-color: lightcoral;
-  color: darkblue;
-  text-align: center;
-  font-size: 25px;
+  background-color: var(--btnSubColor);
+  color: var(--linesTextColor);
+  
   width: 100%;
-  height: 80px;
+  height: fit-content;
   display: flexbox;
-  padding-top: 1.2vh;
-  margin-bottom: 0px;
+  text-align: center;
+  
+  padding:0px;
+  padding-top: 0.4vw;
+  padding-bottom: 0.4vw;
+
+
+  border-bottom: 3px solid var(--linesTextColor);
+  border-top: 3px solid var(--linesTextColor);
 }
 
 #subHeaderContent {
   vertical-align: middle;
   font-size: 45px;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  margin-top: 0;
-  margin-bottom: 0px;
+  font-family: Arial, Geneva, Tahoma, sans-serif;
+  margin: 0;
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
 .pHolder {
@@ -85,10 +110,12 @@ h1 {
 
 .middle-column-item {
 
-  background-color: #ccc;
-  padding: 10px;
+  background-color: var(--cardBaseColor);
+  padding: 0px;
   text-align: center;
   height: fit-content;
+      
+  border-radius: 3%;
 }
 
 .right-column-top {
@@ -131,10 +158,10 @@ h3 {
 .oval {
   width: 100%;
   height: 100%;
-  background-color:  lightcoral;
-  border: 3px solid black;
+  background-color:  var(--btnSubColor);
+  border: 3px solid var(--linesTextColor);
   border-radius: 35px;
-  color: darkblue;
+  color: var(--linesTextColor);
   font-size: 2vw;
   padding: 10px 0px 10px 10px;
 
@@ -145,6 +172,7 @@ h3 {
 }
 
 li {
+  font-family: var(--bulletFont), sans-serif;
   font-size: 1.3vw;
   text-align: start;
   padding-bottom: 10px;
@@ -161,11 +189,82 @@ li {
 #instruction {
   width: 100%;
   height: fit-content;
-  background: lightcoral;
+  background: var(--btnSubColor);
   border-radius: 20px;
   -webkit-border-radius: 20px;
   -moz-border-radius: 20px;
-  box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
-  color: darkblue;
+  box-shadow: 0 0 3px var(--shadowHide);
+  color: var(--linesTextColor);
   padding: 10px 15px 10px 0px;
+  border: 3px solid var(--linesTextColor);
+}
+
+
+/* ************** CARDS ***************** */
+
+.cardHolder { 
+  width: 8.1vw;
+  height: 10.8vw;
+  max-width: 240px;
+  max-height: 320px;
+  border-radius: 10%;
+
+}
+
+.cardImg {
+  width: 100%;
+  height: 100%;
+
+}
+
+
+.cardHolder {
+  padding: 15px;
+  overflow: hidden;
+  border-radius: 5%;
+}
+
+.cardToFlip {
+  background-color: transparent;
+  width: 100%;
+  height: 100%;
+  perspective: 1000px;
+}
+
+.cardToFlip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  box-shadow: 0 4px 10px 3px black;
+
+}
+
+.cardToFlip.showCard .cardToFlip-inner {
+  transform: rotateY(180deg);
+}
+
+.cardToFlip.lockCard .cardToFlip-inner {
+  transform: rotateY(180deg);
+}
+
+.cardBack, .cardFace {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden; /* Safari */
+  backface-visibility: hidden;
+}
+
+.cardBack {
+  background-color: #bbb;
+  color: black;
+}
+
+.cardFace {
+  background-color: darkred;
+  color: black;
+  transform: rotateY(180deg);
 }
