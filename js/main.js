@@ -25,7 +25,8 @@ $(document).ready(initialSetup);
  * @returns allImageUrls Array of strings with img URLs.
  */
 function initialSetup() { //to be executed on page load
-    // creates button elements
+
+    // create button elements
     createDashboard();
 
     // create tiles
@@ -254,7 +255,7 @@ function userChoice(clickedCard) {
         // compare the cards
         isMatch = compareCards(twoCards);
 
-        // check if it"s a match
+        // check if it's a match
         if (!isMatch) {// not a match
 
             // indicate MISS to user
@@ -346,7 +347,7 @@ function createDashboard() {
 /**
  * Creates each card's unique element tree. 
  * THIS IS SCALABLE. If in the future, a form input is provided, the user could
- *  specify # of pairs (difficulty) and this loop would iterate accorind to that input.
+ *  specify # of pairs (difficulty) and this loop would iterate according to that input.
  */
 function createMCItem() {
 
@@ -375,6 +376,6 @@ function createMCItem() {
         //add card to middle column
         colMid.appendChild(midColItem);
 
-    }//END: for loop - each card
+    } //END: for loop - each card
 
-}//END: fn createMCItem()
+} //END: fn createMCItem()
